@@ -1,10 +1,10 @@
-import Vue from "vue";
-import firebase from "firebase";
+import Vue from 'vue'
+import firebase from 'firebase'
 
-import App from "./App.vue";
-import router from "./router";
+import App from './App.vue'
+import router from './router'
 
-Vue.config.productionTip = false;
+Vue.config.productionTip = false
 
 const config = {
   apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
@@ -14,11 +14,11 @@ const config = {
   storageBucket: process.env.VUE_APP_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.VUE_APP_FIREBASE_SENDER_ID,
   appId: process.env.VUE_APP_FIREBASE_APP_ID
-};
-firebase.initializeApp(config);
-console.log(process.env.VUE_APP_FIREBASE_AUTH_DOMAIN);
+}
+firebase.initializeApp(config)
+console.log(process.env.VUE_APP_FIREBASE_AUTH_DOMAIN)
 
 new Vue({
   router,
   render: h => h(App)
-}).$mount("#app");
+}).$mount('#app')

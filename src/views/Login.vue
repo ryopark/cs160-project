@@ -12,15 +12,15 @@
 </template>
 
 <script>
-import firebase from "firebase";
+import firebase from 'firebase'
 
 export default {
-  name: "Login",
+  name: 'Login',
   data() {
     return {
-      username: "",
-      password: ""
-    };
+      username: '',
+      password: ''
+    }
   },
   methods: {
     login: function() {
@@ -29,15 +29,14 @@ export default {
         .signInWithEmailAndPassword(this.username, this.password)
         .then(
           user => {
-            alert("Success!");
-            this.$router.push("/");
+            alert('Success!')
+            this.$router.push('/')
           },
           err => {
-            alert(err.message);
+            alert(err.message)
           }
-        );
+        )
     }
   }
-};
+}
 </script>
-
