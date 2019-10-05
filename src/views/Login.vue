@@ -1,0 +1,43 @@
+<template>
+  <div class="login">
+    <h2>Login</h2>
+    <input type="text" placeholder="Username" v-model="username" />
+    <input type="password" placeholder="Password" v-model="password" />
+    <button @click="login">Login</button>
+    <p>
+      You don't have an account?
+      <router-link to="/signup">create account now!!</router-link>
+    </p>
+  </div>
+</template>
+
+<script>
+import firebase from "firebase";
+
+export default {
+  name: "Login",
+  data() {
+    return {
+      username: "",
+      password: ""
+    };
+  },
+  methods: {
+    login: function() {
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(this.username, this.password)
+        .then(
+          user => {
+            alert("Success!");
+            this.$router.push("/");
+          },
+          err => {
+            alert(err.message);
+          }
+        );
+    }
+  }
+};
+</script>
+
