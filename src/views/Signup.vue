@@ -1,9 +1,12 @@
 <template>
   <div class="signup">
-    <h2>Sign up</h2>
-    <input type="text" placeholder="Username" v-model="username" />
-    <input type="password" placeholder="Password" v-model="password" />
-    <button @click="signUp">Register</button>
+    <h2 class="title">College Room</h2>
+    <div class="signUpForm">
+      <input type="text" placeholder="SJSU email" v-model="email" />
+      <input type="password" placeholder="Password" v-model="password" />
+      <button @click="signUp">Sign up</button>
+    </div>
+    <div v-if="errorMessage">{{errorMessage}}</div>
     <p>
       Do you have an account?
       <router-link to="/login">Login</router-link>
@@ -18,22 +21,54 @@ export default {
   name: 'Signup',
   data() {
     return {
-      username: '',
-      password: ''
+      email: '',
+      password: '',
+      errorMessage: null
     }
   },
   methods: {
     signUp: function() {
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(this.username, this.password)
-        .then(user => {
-          alert('Create account: ', user.email)
-        })
-        .catch(error => {
-          alert(error.message)
-        })
+      if (/(\W|^)[\w.+\-]*@sjsu\.edu(\W|$)/.test(this.email)) {
+        firebase
+          .auth()
+          .createUserWithEmailAndPassword(this.email, this.password)
+          .then(user => {
+            this.errorMessage = null
+            this.$router.push('/')
+          })
+          .catch(error => {
+            this.errorMessage = error.message
+          })
+      } else {
+        this.errorMessage = 'Email has to be sjsu.edu'
+      }
     }
   }
 }
 </script>
+
+<style lang="scss">
+.title {
+  color: #2755ff;
+}
+.signUpForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  input {
+    padding: 0 10px;
+    margin-bottom: 10px;
+    width: 300px;
+    height: 30px;
+  }
+  button {
+    width: 300px;
+    height: 40px;
+    border-radius: 4px;
+    background: #2755ff;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+  }
+}
+</style>
