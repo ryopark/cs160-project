@@ -1,6 +1,7 @@
 <template>
   <div class="signup">
     <h2 class="title">College Room</h2>
+<<<<<<< HEAD
     <div v-if="sentEmail">Thank you for Singing up! we just sent you a verification email!</div>
     <template v-else>
       <AuthenticationForm @submit="signUp" />
@@ -9,6 +10,19 @@
         <router-link to="/login">Login</router-link>
       </p>
     </template>
+=======
+    <div class="signUpForm">
+      <input v-model="email" type="text" placeholder="SJSU email" data-email />
+      <input v-model="password" type="password" placeholder="Password" data-password />
+      <button @click="signUp">Sign up</button>
+      <div v-if="errorMessage">{{ errorMessage }}</div>
+    </div>
+    <div v-if="errorMessage" class="errorMessage">{{ errorMessage }}</div>
+    <p>
+      Already have your account?
+      <router-link to="/login">Login</router-link>
+    </p>
+>>>>>>> change the error message div tag
   </div>
 </template>
 
