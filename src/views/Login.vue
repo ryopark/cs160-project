@@ -1,8 +1,8 @@
 <template>
   <div class="login">
     <h2>Login</h2>
-    <input type="text" placeholder="Username" v-model="username" />
-    <input type="password" placeholder="Password" v-model="password" />
+    <input v-model="username" type="text" placeholder="Username" />
+    <input v-model="password" type="password" placeholder="Password" />
     <button @click="login">Login</button>
     <p>
       You don't have an account?
