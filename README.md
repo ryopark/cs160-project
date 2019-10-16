@@ -1,5 +1,11 @@
 # cs160-project
 
+## Required software
+
+yarn
+node (12.x.x)
+vs code
+
 ## Project setup
 
 ```
