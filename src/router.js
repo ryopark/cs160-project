@@ -4,6 +4,7 @@ import Home from './views/Home.vue'
 import Signup from './views/Signup.vue'
 import Login from './views/Login.vue'
 import firebase from 'firebase'
+import Post from './views/Post.vue'
 
 Vue.use(Router)
 
@@ -34,6 +35,11 @@ const router = new Router({
       path: '/login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/post',
+      name: 'New Post',
+      component: Post
     }
   ]
 })

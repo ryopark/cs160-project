@@ -4,11 +4,12 @@
     <div class="signUpForm">
       <input type="text" placeholder="SJSU email" v-model="email" />
       <input type="password" placeholder="Password" v-model="password" />
+      <input type="password" name="confirm_password" placeholder="Confirm password" v-model="confirmpassword"  required/><br/>      
       <button @click="signUp">Sign up</button>
     </div>
     <div v-if="errorMessage">{{errorMessage}}</div>
     <p>
-      Do you have an account?
+      Already have an account?
       <router-link to="/login">Login</router-link>
     </p>
   </div>
@@ -23,11 +24,16 @@ export default {
     return {
       email: '',
       password: '',
+      confirmpassword:'',
       errorMessage: null
     }
   },
   methods: {
     signUp: function() {
+      if(this.password != this.confirmpassword)
+      {
+        this.errorMessage = 'Your password and confirmation password do not match'
+      }
       if (/(\W|^)[\w.+\-]*@sjsu\.edu(\W|$)/.test(this.email)) {
         firebase
           .auth()
@@ -41,7 +47,7 @@ export default {
           })
       } else {
         this.errorMessage = 'Email has to be sjsu.edu'
-      }
+      }    
     }
   }
 }
