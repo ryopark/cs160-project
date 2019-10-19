@@ -8,7 +8,7 @@
     </div>
     <div v-if="errorMessage" class="errorMessage">{{ errorMessage }}</div>
     <p>
-      Do you have an account?
+      Already have an account?
       <router-link to="/login">Login</router-link>
     </p>
   </div>
@@ -23,6 +23,7 @@ export default {
     return {
       email: '',
       password: '',
+      confirmpassword: '',
       errorMessage: null
     }
   },
