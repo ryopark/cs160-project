@@ -17,14 +17,14 @@ const router = new Router({
       component: Home,
       meta: { requiresAuth: true }
     },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
-    },
+    // {
+    //   path: '/about',
+    //   name: 'about',
+    //   // route level code-splitting
+    //   // this generates a separate chunk (about.[hash].js) for this route
+    //   // which is lazy-loaded when the route is visited.
+    //   component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+    // },
     {
       path: '/signup',
       name: 'Signup',
@@ -41,8 +41,20 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
   if (requiresAuth) {
-    firebase.auth().onAuthStateChanged(user => {
+    // このルートはログインされているかどうか認証が必要です。
+    // もしされていないならば、ログインページにリダイレクトします。
+    firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
+        if (!user.emailVerified) {
+          user
+            .sendEmailVerification()
+            .then(() => {
+              alert('confirmation email was sent')
+            })
+            .catch(error => {
+              alert(error)
+            })
+        }
         next()
       } else {
         next({

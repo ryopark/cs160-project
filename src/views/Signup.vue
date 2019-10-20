@@ -28,11 +28,11 @@ export default {
   },
   methods: {
     signUp: function() {
-      if (/(\W|^)[\w.+\-]*@sjsu\.edu(\W|$)/.test(this.email)) {
+      if (/(\W|^)[\w.+-]*@sjsu\.edu(\W|$)/.test(this.email)) {
         firebase
           .auth()
           .createUserWithEmailAndPassword(this.email, this.password)
-          .then(user => {
+          .then(() => {
             this.errorMessage = null
             this.$router.push('/')
           })
