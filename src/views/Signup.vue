@@ -8,7 +8,7 @@
     </div>
     <div v-if="errorMessage" class="errorMessage">{{ errorMessage }}</div>
     <p>
-      Do you have an account?
+      Already have your account?
       <router-link to="/login">Login</router-link>
     </p>
   </div>
