@@ -2,11 +2,11 @@
   <div class="signup">
     <h2 class="title">College Room</h2>
     <div class="signUpForm">
-      <input v-model="email" type="text" placeholder="SJSU email" />
-      <input v-model="password" type="password" placeholder="Password" />
+      <input v-model="email" type="text" placeholder="SJSU email" data-email />
+      <input v-model="password" type="password" placeholder="Password" data-password />
       <button @click="signUp">Sign up</button>
     </div>
-    <div v-if="errorMessage">{{ errorMessage }}</div>
+    <div v-if="errorMessage" class="errorMessage">{{ errorMessage }}</div>
     <p>
       Do you have an account?
       <router-link to="/login">Login</router-link>
