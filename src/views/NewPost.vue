@@ -15,41 +15,31 @@
       <b-button v-on:click="submit" variant="info">Submit</b-button>
   </div>
 </template>
-
 <script>
-// import router from '../router'
 import firebase from 'firebase'
-
 export default {
   components: {},
   data() {
     return {
-      // title: '',
-      // content: '',
-      // cat:'',
     }
   },
   methods: {
-    // cat: function() {
-      
-    // },
     submit: function() {
       if (this.title == '') {
         alert('Title can not be blank')
       }
       if (this.content == '') {
         alert('Content can not be blank')
-      } else {
-        
+      } else {  
         var newPostKey = firebase.database().ref().child('posts').push().key;
-
         firebase.database().ref('posts/'+ newPostKey).set(
           { 
             "body" : this.content,
             "category" : "class",
-            "date" : "12/10/2019",
+            "date" : new Date().toISOString(),
             "title" : this.title,
-            "author" : "oko"
+            "author" : "oko",
+            "user_id" : "123455667"
         } 
           , function(error) {
             if (error) {
@@ -59,14 +49,11 @@ export default {
             }
           });
       }
-      // this.$router.push("/post/"+newPostKey)
       this.$router.push({ name: 'Post', params: { postId: newPostKey  } })
     },
     cancel: function() {
       if (this.title || this.content) {
         window.prompt('sometext', 'defaultText')
-        //pop up a message box 'are you sure you want to discard the change'
-        //back to last page visted if yes stay otherwise
       }
     }
   }
@@ -104,8 +91,3 @@ export default {
   }
 }
 </style>
-
-
-
-
-

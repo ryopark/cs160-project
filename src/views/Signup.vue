@@ -27,18 +27,19 @@ export default {
     }
   },
   methods: {
-    signUp: function() {
+    signup() {
       if (/(\W|^)[\w.+-]*@sjsu\.edu(\W|$)/.test(this.email)) {
         firebase
           .auth()
           .createUserWithEmailAndPassword(this.email, this.password)
           .then(() => {
             this.errorMessage = null
-            this.$router.push('/')
+            this.$router.replace('/')
           })
           .catch(error => {
             this.errorMessage = error.message
           })
+
       } else {
         this.errorMessage = 'Email has to be sjsu.edu'
       }

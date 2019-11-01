@@ -28,7 +28,7 @@ export default {
         .auth()
         .signInWithEmailAndPassword(this.username, this.password)
         .then(
-          () => {
+          (user) => {
             this.$router.push('/')
           },
           err => {
