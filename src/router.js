@@ -5,7 +5,6 @@ import Signup from './views/Signup.vue'
 import Login from './views/Login.vue'
 import firebase from 'firebase'
 import NewPost from './views/NewPost.vue'
-import MainPost from './views/MainPost.vue'
 
 Vue.use(Router)
 
@@ -40,17 +39,26 @@ const router = new Router({
     {
       path: '/post/new',
       name: 'NewPost',
-      component: NewPost
+      component: NewPost,
+      // meta: {
+      //   requiresAuth: true
+      // }
     },
-    {
-      path:'/post/:postId',
-      name: 'Post',
-      component: MainPost
-    }
+    // {
+    //   path:'/post/:postId',
+    //   name: 'Post',
+    //   component: MainPost
+    // }
   ]
 })
 
 router.beforeEach((to, from, next) => {
+  // let currentUser = firebase.auth().currentUser
+  // let requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+
+  // if (requiresAuth && !currentUser) next('login')
+  // else if (!requiresAuth && currentUser) next('comics')
+  // else next()
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
   if (requiresAuth) {
     // このルートはログインされているかどうか認証が必要です。
