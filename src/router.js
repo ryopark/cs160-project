@@ -37,13 +37,13 @@ const router = new Router({
       component: Login
     },
     {
-      path: '/post/new',
+      path: '/posts/new',
       name: 'NewPost',
-      component: NewPost,
+      component: NewPost
       // meta: {
       //   requiresAuth: true
       // }
-    },
+    }
     // {
     //   path:'/post/:postId',
     //   name: 'Post',
@@ -61,8 +61,6 @@ router.beforeEach((to, from, next) => {
   // else next()
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
   if (requiresAuth) {
-    // このルートはログインされているかどうか認証が必要です。
-    // もしされていないならば、ログインページにリダイレクトします。
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         if (!user.emailVerified) {

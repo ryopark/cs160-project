@@ -3,16 +3,16 @@
     <h2 class="title">College Room</h2>
     <form>
       <input v-model="title" type="text" name="title" placeholder="Enter a title.." />
-      <b-dropdown v-on:click="cat"  id="dropdown-1" size='sm' variant="primary" text="Categories" class="m-md-2">
-      <b-dropdown-item>a</b-dropdown-item>
-      <b-dropdown-item>b</b-dropdown-item>
-      <b-dropdown-item>c</b-dropdown-item>
+      <b-dropdown id="dropdown-1" size="sm" variant="primary" text="Categories" class="m-md-2" @click="cat">
+        <b-dropdown-item>a</b-dropdown-item>
+        <b-dropdown-item>b</b-dropdown-item>
+        <b-dropdown-item>c</b-dropdown-item>
       </b-dropdown>
       <textarea v-model="content" placeholder="Enter your text.." />
     </form>
-      
-      <b-button v-on:click="cancel" variant="info">Cancel</b-button>
-      <b-button v-on:click="submit" variant="info">Submit</b-button>
+
+    <b-button variant="info" @click="cancel">Cancel</b-button>
+    <b-button variant="info" @click="submit">Submit</b-button>
   </div>
 </template>
 <script>
@@ -20,8 +20,7 @@ import firebase from 'firebase'
 export default {
   components: {},
   data() {
-    return {
-    }
+    return {}
   },
   methods: {
     submit: function() {
@@ -30,26 +29,34 @@ export default {
       }
       if (this.content == '') {
         alert('Content can not be blank')
-      } else {  
-        var newPostKey = firebase.database().ref().child('posts').push().key;
-        firebase.database().ref('posts/'+ newPostKey).set(
-          { 
-            "body" : this.content,
-            "category" : "class",
-            "date" : new Date().toISOString(),
-            "title" : this.title,
-            "author" : "oko",
-            "user_id" : "123455667"
-        } 
-          , function(error) {
-            if (error) {
-              alert('The write failed...')
-            } else {
-              alert('Data saved successfully!')
+      } else {
+        var newPostKey = firebase
+          .database()
+          .ref()
+          .child('posts')
+          .push().key
+        firebase
+          .database()
+          .ref('posts/' + newPostKey)
+          .set(
+            {
+              body: this.content,
+              category: 'class',
+              date: new Date().toISOString(),
+              title: this.title,
+              author: 'oko',
+              user_id: '123455667'
+            },
+            function(error) {
+              if (error) {
+                alert('The write failed...')
+              } else {
+                alert('Data saved successfully!')
+              }
             }
-          });
+          )
       }
-      this.$router.push({ name: 'Post', params: { postId: newPostKey  } })
+      this.$router.push({ name: 'Post', params: { postId: newPostKey } })
     },
     cancel: function() {
       if (this.title || this.content) {

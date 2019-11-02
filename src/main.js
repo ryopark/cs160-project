@@ -8,10 +8,8 @@ import router from './router'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-// import './custom.scss'
 
 Vue.use(BootstrapVue)
-
 
 Vue.config.productionTip = false
 
@@ -25,7 +23,6 @@ const config = {
   appId: process.env.VUE_APP_FIREBASE_APP_ID
 }
 firebase.initializeApp(config)
-
 
 new Vue({
   router,
