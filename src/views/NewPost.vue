@@ -18,6 +18,7 @@
 <script>
 import firebase from 'firebase'
 export default {
+  name: 'NewPost',
   components: {},
   data() {
     return {}
