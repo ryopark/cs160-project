@@ -1,46 +1,53 @@
 <template>
   <div class="signup">
     <h2 class="title">College Room</h2>
-    <div class="signUpForm">
-      <input v-model="email" type="text" placeholder="SJSU email" data-email />
-      <input v-model="password" type="password" placeholder="Password" data-password />
-      <button @click="signUp">Sign up</button>
-    </div>
-    <div v-if="errorMessage" class="errorMessage">{{ errorMessage }}</div>
-    <p>
-      Already have your account?
-      <router-link to="/login">Login</router-link>
-    </p>
+    <div v-if="sentEmail">Thank you for Singing up! we just sent you a verification email!</div>
+    <template v-else>
+      <AuthenticationForm @submit="signUp" />
+      <p>
+        Already have your account?
+        <router-link to="/login">Login</router-link>
+      </p>
+    </template>
   </div>
 </template>
 
 <script>
 import firebase from 'firebase'
+import AuthenticationForm from '../components/AuthenticationForm'
 
 export default {
   name: 'Signup',
+  components: {
+    AuthenticationForm
+  },
   data() {
     return {
-      email: '',
-      password: '',
-      errorMessage: null
+      sentEmail: false
     }
   },
   methods: {
-    signUp: function() {
-      if (/(\W|^)[\w.+-]*@sjsu\.edu(\W|$)/.test(this.email)) {
+    signUp(email) {
+      if (/(\W|^)[\w.+-]*@sjsu\.edu(\W|$)/.test(email)) {
+        const actionCodeSettings = {
+          url: 'http://' + window.location.host + '/signup',
+          handleCodeInApp: true
+        }
         firebase
           .auth()
-          .createUserWithEmailAndPassword(this.email, this.password)
+          .sendSignInLinkToEmail(email, actionCodeSettings)
           .then(() => {
-            this.errorMessage = null
-            this.$router.push('/')
+            // The link was successfully sent. Inform the user.
+            // Save the email locally so you don't need to ask the user for it again
+            // if they open the link on the same device.
+            window.localStorage.setItem('emailForSignIn', email)
+            this.sentEmail = true
           })
           .catch(error => {
-            this.errorMessage = error.message
+            this.errorMessage = error
           })
       } else {
-        this.errorMessage = 'Email has to be sjsu.edu'
+        this.errorMessage = 'email address is not in a valid format. (i.e. exmaple@sjsu.edu)'
       }
     }
   }
