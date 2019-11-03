@@ -5,6 +5,7 @@ import Login from './views/Login.vue'
 import firebase from 'firebase'
 import NewPost from './views/NewPost.vue'
 import Post from './views/Post.vue'
+import Posts from './views/Posts.vue'
 
 Vue.use(Router)
 
@@ -40,15 +41,17 @@ const router = new Router({
       path: '/posts/new',
       name: 'newPost',
       component: NewPost
-      // meta: {
-      //   requiresAuth: true
-      // }
+    },
+    {
+      path: '/posts/',
+      name: 'Posts',
+      component: Posts
+    },
+    {
+      path: '/post/:id',
+      name: 'Post',
+      component: Post
     }
-    // {
-    //   path:'/post/:postId',
-    //   name: 'Post',
-    //   component: MainPost
-    // }
   ]
 })
 
