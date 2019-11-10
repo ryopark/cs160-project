@@ -11,8 +11,7 @@
             class="category text-left"
             :class="{ selected: category === selectedCategory }"
             @click="selectCategory(category)"
-            >{{ category }}</b-list-group-item
-          >
+          >{{ category }}</b-list-group-item>
         </b-list-group>
       </b-col>
       <b-col cols="9">
@@ -39,6 +38,7 @@
 
 <script>
 import Header from '../components/Header'
+import firebase from 'firebase'
 
 export default {
   name: 'Post',
@@ -49,41 +49,7 @@ export default {
     return {
       selectedCategory: 'all',
       categories: ['all', 'class', 'test', 'general'],
-      posts: [
-        {
-          body:
-            'When Vue is updating a list of elements rendered with v-for, by default it uses an “in-place patch” strategy. If the order of the data items has changed, instead of moving the DOM elements to match the order of the items, Vue will patch each element in-place and make sure it reflects what should be rendered at that particular index. This is similar to the behavior of',
-          category: 'class',
-          date: '12/10/2019',
-          title: 'Test1',
-          id: '1',
-          user_id: 'EdaUq5sA4ZX0Iatw2H87SOERQlf2'
-        },
-        {
-          body: 'This is the thread body',
-          category: 'test',
-          date: '12/10/2019',
-          title: 'Test2',
-          id: '2',
-          user_id: 'EdaUq5sA4ZX0Iatw2H87SOERQlf2'
-        },
-        {
-          body: 'This is the thread body',
-          category: 'class',
-          date: '12/10/2019',
-          title: 'Test3',
-          user_id: 'EdaUq5sA4ZX0Iatw2H87SOERQlf2',
-          id: '3'
-        },
-        {
-          body: 'This is the thread body',
-          category: 'general',
-          date: '12/10/2019',
-          title: 'Test4',
-          user_id: 'EdaUq5sA4ZX0Iatw2H87SOERQlf2',
-          id: '4'
-        }
-      ]
+      posts: []
     }
   },
   computed: {
@@ -91,6 +57,23 @@ export default {
       if (this.selectedCategory === 'all') return this.posts
       return this.posts.filter(post => post.category === this.selectedCategory)
     }
+  },
+  mounted() {
+    console.log(
+      await firebase
+        .database()
+        .ref('threads')
+        .once('value')
+        .then(function(snapshot) {
+          return snapshot.val().filter(p => p)
+        })
+    )
+
+    firebase
+      .database()
+      .ref('threads')
+      .once('value')
+      .then(snapshot => (this.posts = snapshot.val().filter(p => p)))
   },
   methods: {
     selectCategory(category) {
