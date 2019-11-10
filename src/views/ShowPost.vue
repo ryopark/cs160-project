@@ -2,15 +2,15 @@
   <div class="thread">
     <h2 class="title">{{ post.title }}</h2>
     <h5>Date: {{ post.date }}</h5>
-    <span class="">
+    <span class>
       <strong>{{ post.body }}</strong>
     </span>
     <div :key="comments" class="comment-section">
       <div v-for="comment in comments" :key="comment" class="comment">
         <p>
-          <span>{{ comment.timestamp }}</span
-          ><br />
-          <strong>{{ comment.user_id }} says: </strong>
+          <span>{{ comment.timestamp }}</span>
+          <br />
+          <strong>{{ comment.user_id }} says:</strong>
           <span>{{ comment.message }}</span>
         </p>
       </div>
@@ -29,7 +29,7 @@
 import firebase from 'firebase'
 
 export default {
-  name: 'Post',
+  name: 'ShowPost',
   data() {
     return {
       post: {},

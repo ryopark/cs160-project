@@ -6,14 +6,19 @@
     <b-navbar-nav class="ml-auto">
       <b-nav-item href="#">setting</b-nav-item>
       <b-nav-item href="#">logout</b-nav-item>
-      <b-nav-item href="#" class="ml-2 createPost">Create Post</b-nav-item>
+      <b-nav-item class="ml-2 createPost" @click="goCreatePost">Create Post</b-nav-item>
     </b-navbar-nav>
   </b-navbar>
 </template>
 
 <script>
 export default {
-  name: 'Header'
+  name: 'Header',
+  methods: {
+    goCreatePost() {
+      this.$router.push('posts/new')
+    }
+  }
 }
 </script>
 
