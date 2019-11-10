@@ -11,7 +11,8 @@
             class="category text-left"
             :class="{ selected: category === selectedCategory }"
             @click="selectCategory(category)"
-          >{{ category }}</b-list-group-item>
+            >{{ category }}</b-list-group-item
+          >
         </b-list-group>
       </b-col>
       <b-col cols="9">
@@ -59,16 +60,6 @@ export default {
     }
   },
   mounted() {
-    console.log(
-      await firebase
-        .database()
-        .ref('threads')
-        .once('value')
-        .then(function(snapshot) {
-          return snapshot.val().filter(p => p)
-        })
-    )
-
     firebase
       .database()
       .ref('threads')
