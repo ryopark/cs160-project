@@ -1,0 +1,68 @@
+{
+  "posts": {
+    "1": {
+      "body": "etatatatatgeahaha",
+      "title": "geagagagagagagag",
+      "category": "class",
+      "userId": "afeagfa",
+      "date": "12/10/2019"
+    },
+    "2": {
+      "body": "etatatatatgeahaha",
+      "title": "geagagagagagagag",
+      "category": "class",
+      "userId": "afeagfa",
+      "date": "12/10/2019"
+    }
+  },
+  "comments": {
+    "1": {
+      "content": "testComment",
+      "postId": "1",
+      "userId": "123",
+      "date": "12/10/2019",
+      "uniqueName": "lion1"
+    },
+    "2": {
+      "content": "testComment",
+      "postId": "1",
+      "userId": "123",
+      "date": "12/10/2019",
+      "uniqueName": "lion1"
+    },
+    "3": {
+      "content": "testComment",
+      "postId": "1",
+      "userId": "123",
+      "date": "12/10/2019",
+      "uniqueName": "lion1"
+    },
+    "4": {
+      "content": "testComment",
+      "postId": "1",
+      "userId": "123",
+      "date": "12/10/2019",
+      "uniqueName": "lion1"
+    }
+  },
+  "postHasUsedUniqueNames": {
+    "post1": {
+      "lion1": true,
+      "lion2": true,
+      "lion3": true
+    }
+  },
+  "postMembers": {
+    "1": {
+      "user1": "lion1",
+      "user2": "lion2",
+      "user3": "lion3"
+    }
+  },
+  "postHasComments": {
+    "1": {
+      "1": true,
+      "2": true
+    }
+  }
+}

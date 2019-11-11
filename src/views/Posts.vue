@@ -23,6 +23,7 @@
             :key="post.id"
             href="#"
             class="post flex-column align-items-start p-4"
+            @click="clickPost(post.id)"
           >
             <div class="d-flex w-100 justify-content-between">
               <h5 class="mb-1">{{ post.title }}</h5>
@@ -39,10 +40,9 @@
 
 <script>
 import Header from '../components/Header'
-import firebase from 'firebase'
-
+import { getPosts } from '../firebaseAPI'
 export default {
-  name: 'Post',
+  name: 'Posts',
   components: {
     Header
   },
@@ -60,15 +60,16 @@ export default {
     }
   },
   mounted() {
-    firebase
-      .database()
-      .ref('threads')
-      .once('value')
-      .then(snapshot => (this.posts = snapshot.val().filter(p => p)))
+    getPosts().then(result => {
+      this.posts = result
+    })
   },
   methods: {
     selectCategory(category) {
       this.selectedCategory = category
+    },
+    clickPost(postId) {
+      this.$router.push({ name: 'showPost', params: { id: postId } })
     }
   }
 }

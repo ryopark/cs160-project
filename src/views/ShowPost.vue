@@ -5,13 +5,16 @@
     <span class>
       <strong>{{ post.body }}</strong>
     </span>
-    <div :key="comments" class="comment-section">
-      <div v-for="comment in comments" :key="comment" class="comment">
+    <div v-if="comments" class="comment-section">
+      <div v-for="(comment, i) in comments" :key="i" class="comment">
         <p>
-          <span>{{ comment.timestamp }}</span>
+          <span>{{ comment.uniqueName }}</span>
+          <br />
+
+          <span>{{ comment.date }}</span>
           <br />
           <strong>{{ comment.user_id }} says:</strong>
-          <span>{{ comment.message }}</span>
+          <span>{{ comment.content }}</span>
         </p>
       </div>
     </div>
@@ -27,32 +30,21 @@
 
 <script>
 import firebase from 'firebase'
+import { getPost, getCommentsByPost } from '../firebaseAPI'
 
 export default {
   name: 'ShowPost',
   data() {
     return {
       post: {},
-      comments: {}
+      comments: {},
+      content: ''
     }
   },
   mounted() {
     this.showCommentBox(true)
-    const self = this
-    firebase
-      .database()
-      .ref('/threads/' + this.$route.params.id)
-      .once('value')
-      .then(function(snapshot) {
-        self.post = snapshot.val()
-      })
-    firebase
-      .database()
-      .ref('/comments/' + this.$route.params.id)
-      .once('value')
-      .then(function(snapshot) {
-        self.comments = snapshot.val()
-      })
+    getPost(this.$route.params.id).then(result => (this.post = result))
+    getCommentsByPost(this.$route.params.id).then(result => (this.comments = result))
   },
   methods: {
     showCommentBox: function(reset) {
