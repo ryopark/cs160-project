@@ -2,10 +2,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Signup from './views/Signup.vue'
 import Login from './views/Login.vue'
-import firebase from 'firebase'
 import NewPost from './views/NewPost.vue'
 import ShowPost from './views/ShowPost.vue'
-import Posts from './views/Posts.vue'
+import Main from './views/Main.vue'
 
 Vue.use(Router)
 
@@ -15,18 +14,10 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'posts',
-      component: Posts,
+      name: 'main',
+      component: Main,
       meta: { requiresAuth: true }
     },
-    // {
-    //   path: '/about',
-    //   name: 'about',
-    //   // route level code-splitting
-    //   // this generates a separate chunk (about.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
-    // },
     {
       path: '/signup',
       name: 'signup',
@@ -40,47 +31,38 @@ const router = new Router({
     {
       path: '/posts/new',
       name: 'newPost',
-      component: NewPost
+      component: NewPost,
+      meta: { requiresAuth: true }
     },
     {
       path: '/posts/:id',
       name: 'showPost',
-      component: ShowPost
+      component: ShowPost,
+      meta: { requiresAuth: true }
     }
   ]
 })
 
 router.beforeEach((to, from, next) => {
-  // let currentUser = firebase.auth().currentUser
-  // let requiresAuth = to.matched.some(record => record.meta.requiresAuth)
-
-  // if (requiresAuth && !currentUser) next('login')
-  // else if (!requiresAuth && currentUser) next('comics')
-  // else next()
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+  const token = localStorage.getItem('token')
   if (requiresAuth) {
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        if (!user.emailVerified) {
-          user
-            .sendEmailVerification()
-            .then(() => {
-              alert('confirmation email was sent')
-            })
-            .catch(error => {
-              alert(error)
-            })
-        }
-        next()
-      } else {
-        next({
-          path: '/login',
-          query: { redirect: to.fullPath }
-        })
-      }
-    })
+    if (token) {
+      next()
+    } else {
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath }
+      })
+    }
   } else {
-    next()
+    if (token) {
+      next({
+        path: '/'
+      })
+    } else {
+      next()
+    }
   }
 })
 

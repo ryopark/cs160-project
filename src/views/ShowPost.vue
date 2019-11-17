@@ -1,81 +1,66 @@
 <template>
   <div class="thread">
-    <h2 class="title">{{ post.title }}</h2>
-    <h5>Date: {{ post.date }}</h5>
-    <span class>
-      <strong>{{ post.body }}</strong>
-    </span>
-    <div v-if="comments" class="comment-section">
-      <div v-for="(comment, i) in comments" :key="i" class="comment">
-        <p>
-          <span>{{ comment.uniqueName }}</span>
-          <br />
+    <Header />
+    <b-card class="mt-2" :title="post.title" :sub-title="post.createdAt">
+      <b-card-text>{{ post.content }}</b-card-text>
+    </b-card>
+    <div v-if="post.comments" class="comment-section">
+      <h5>comments:</h5>
+      <ul class="list-unstyled">
+        <b-media v-for="(comment, i) in post.comments" :key="i" tag="li" class="bg-white p-3">
+          <div class="d-flex justify-content-between">
+            <h5 class="mt-0 mb-1">{{ comment.userRandomName }}</h5>
+            <div>{{ comment.createdAt }}</div>
+          </div>
 
-          <span>{{ comment.date }}</span>
-          <br />
-          <strong>{{ comment.user_id }} says:</strong>
-          <span>{{ comment.content }}</span>
-        </p>
-      </div>
+          <p class="mb-0">{{ comment.content }}</p>
+        </b-media>
+      </ul>
     </div>
-    <div class="add-comment">
-      <button id="addCommentButton" @click="showCommentBox(false)">Add Comment</button>
-      <div id="commentBox">
-        <textarea id="newCommentBox" v-model="content" class="new-comment" placeholder="Enter your comment here.." />
-        <button id="publishCommentButton" @click="publishComment">Publish Comment</button>
-      </div>
+    <div id="commentBox">
+      <b-form-textarea
+        id="textarea"
+        v-model="newComment"
+        placeholder="Add comment here..."
+        rows="3"
+        max-rows="6"
+      ></b-form-textarea>
+
+      <b-button
+        :disabled="newComment === ''"
+        class="mt-2"
+        variant="outline-primary"
+        @click.prevent="createComment"
+      >add comment</b-button>
     </div>
   </div>
 </template>
 
 <script>
-import firebase from 'firebase'
-import { getPost, getCommentsByPost } from '../firebaseAPI'
-
+import { getPost, newComment } from '../usecases'
+import Header from '../components/Header'
 export default {
   name: 'ShowPost',
+  components: {
+    Header
+  },
   data() {
     return {
       post: {},
-      comments: {},
-      content: ''
+      newComment: ''
     }
   },
   mounted() {
-    this.showCommentBox(true)
-    getPost(this.$route.params.id).then(result => (this.post = result))
-    getCommentsByPost(this.$route.params.id).then(result => (this.comments = result))
+    getPost(this.$route.params.id).then(res => {
+      this.post = res.data
+    })
   },
   methods: {
-    showCommentBox: function(reset) {
-      var commentBox = document.getElementById('commentBox')
-      var addCommentButton = document.getElementById('addCommentButton')
-      if (!reset && commentBox.style.display === 'none') {
-        addCommentButton.style.display = 'none'
-        commentBox.style.display = 'block'
-      } else {
-        addCommentButton.style.display = 'block'
-        commentBox.style.display = 'none'
-      }
-    },
-    publishComment: function() {
-      const self = this
-      const comment = {
-        message: document.getElementById('newCommentBox').value,
-        timestamp: new Date().toISOString(),
-        user_id: 'temp_username'
-      }
-      firebase
-        .database()
-        .ref('/comments/' + this.$route.params.id)
-        .push(comment)
-        .then(function(response) {
-          const temp = self.comments
-          temp[response.key] = comment
-          self.comments = temp
-          self.$forceUpdate()
-          document.getElementById('newCommentBox').value = ''
-        })
+    createComment() {
+      newComment({ postId: this.post.id, content: this.newComment }).then(res => {
+        this.post = res.data
+        this.newComment = ''
+      })
     }
   }
 }
@@ -83,13 +68,11 @@ export default {
 
 <style lang="scss" scoped>
 .thread {
-  margin: 10px;
-  position: absolute;
-  width: 95%;
-  box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.3);
-  padding: 10px;
-  background: white;
+  margin: 30px;
+  display: flex;
+  flex-direction: column;
   text-align: left;
+  justify-content: center;
 }
 .title {
   color: #2755ff;

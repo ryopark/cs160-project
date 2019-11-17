@@ -4,9 +4,8 @@
 
     <!-- Right aligned nav items -->
     <b-navbar-nav class="ml-auto">
-      <b-nav-item href="#">setting</b-nav-item>
-      <b-nav-item href="#">logout</b-nav-item>
-      <b-nav-item class="ml-2 createPost" @click="goCreatePost">Create Post</b-nav-item>
+      <b-nav-item @click.prevent="logout">logout</b-nav-item>
+      <b-nav-item class="ml-2 createPost" @click.prevent="goCreatePost">Create Post</b-nav-item>
     </b-navbar-nav>
   </b-navbar>
 </template>
@@ -15,6 +14,7 @@
 export default {
   name: 'Header',
   methods: {
+    logout() {},
     goCreatePost() {
       this.$router.push('posts/new')
     }

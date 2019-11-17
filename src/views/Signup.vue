@@ -3,7 +3,7 @@
     <h2 class="title">College Room</h2>
     <div v-if="sentEmail">Thank you for Singing up! we just sent you a verification email!</div>
     <template v-else>
-      <AuthenticationForm @submit="signUp" />
+      <AuthenticationForm submit-label="Signup" @submit="signUp" />
       <p>
         Already have your account?
         <router-link to="/login">Login</router-link>
@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import firebase from 'firebase'
 import AuthenticationForm from '../components/AuthenticationForm'
+import { createUser } from '../usecases'
 
 export default {
   name: 'Signup',
@@ -23,29 +23,16 @@ export default {
   },
   data() {
     return {
-      sentEmail: false
+      sentEmail: false,
+      token: this.$route.query.token || ''
     }
   },
   methods: {
-    signUp(email) {
+    signUp(email, password) {
       if (/(\W|^)[\w.+-]*@sjsu\.edu(\W|$)/.test(email)) {
-        const actionCodeSettings = {
-          url: 'http://' + window.location.host + '/signup',
-          handleCodeInApp: true
-        }
-        firebase
-          .auth()
-          .sendSignInLinkToEmail(email, actionCodeSettings)
-          .then(() => {
-            // The link was successfully sent. Inform the user.
-            // Save the email locally so you don't need to ask the user for it again
-            // if they open the link on the same device.
-            window.localStorage.setItem('emailForSignIn', email)
-            this.sentEmail = true
-          })
-          .catch(error => {
-            this.errorMessage = error
-          })
+        createUser(email, password).then(() => {
+          this.sentEmail = true
+        })
       } else {
         this.errorMessage = 'email address is not in a valid format. (i.e. exmaple@sjsu.edu)'
       }
@@ -54,7 +41,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .title {
   color: #2755ff;
 }

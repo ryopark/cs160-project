@@ -1,7 +1,8 @@
 <template>
   <form @submit.prevent="submit">
     <input v-model="email" type="text" placeholder="SJSU email" data-email />
-    <button type="submit" :disabled="isSubmitting">submit</button>
+    <input v-model="password" type="password" placeholder="Password" />
+    <button type="submit" :disabled="isSubmitting">{{ submitLabel }}</button>
     <div v-if="errorMessage" class="errorMessage">{{ errorMessage }}</div>
   </form>
 </template>
@@ -9,9 +10,11 @@
 <script>
 export default {
   name: 'AuthenticationForm',
+  props: ['submitLabel'],
   data() {
     return {
       email: '',
+      password: '',
       errorMessage: null,
       isSubmitting: false
     }
@@ -20,7 +23,7 @@ export default {
     submit() {
       if (/(\W|^)[\w.+-]*@sjsu\.edu(\W|$)/.test(this.email)) {
         this.isSubmitting = true
-        this.$emit('submit', this.email)
+        this.$emit('submit', this.email, this.password)
         this.isSubmitting = false
       } else {
         this.errorMessage = 'email address is not in a valid format. (i.e. exmaple@sjsu.edu)'
