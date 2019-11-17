@@ -11,7 +11,8 @@
             class="category text-left"
             :class="{ selected: category === selectedCategory }"
             @click="selectCategory(category)"
-          >{{ category }}</b-list-group-item>
+            >{{ category }}</b-list-group-item
+          >
         </b-list-group>
       </b-col>
       <b-col cols="9">
@@ -35,7 +36,7 @@ export default {
   data() {
     return {
       selectedCategory: 'all',
-      categories: ['all', 'class', 'test', 'general']
+      categories: ['all', 'my posts', 'class', 'test', 'general']
     }
   },
   mounted() {

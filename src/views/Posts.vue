@@ -13,14 +13,14 @@
           <small class="text-muted">{{ post.createdAt }}</small>
         </div>
 
-        <!-- <p class="mb-1 text-left text-truncate">{{ post.content }}</p> -->
+        <p class="mb-1 text-left text-truncate">{{ post.content }}</p>
       </b-list-group-item>
     </b-list-group>
   </div>
 </template>
 
 <script>
-import { getPosts } from '../usecases'
+import { getPosts, getMyPosts } from '../usecases'
 export default {
   name: 'Posts',
   props: {
@@ -31,18 +31,23 @@ export default {
   },
   data() {
     return {
-      posts: []
+      posts: [],
+      myPosts: []
     }
   },
   computed: {
     filteredPosts() {
       if (this.selectedCategory === 'all') return this.posts
+      if (this.selectedCategory === 'my posts') return this.myPosts
       return this.posts.filter(post => post.category === this.selectedCategory)
     }
   },
   mounted() {
     getPosts().then(res => {
       this.posts = res.data
+    })
+    getMyPosts().then(res => {
+      this.myPosts = res.data.posts
     })
   },
   methods: {

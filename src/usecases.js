@@ -23,16 +23,22 @@ export async function createUser(userName, password) {
 }
 
 export async function login(userName, password) {
-  return await HTTP.post('/users/login', {
-    username: userName,
-    password: password
-  }).then(res => {
-    console.log(res)
-    return res
-  })
+  try {
+    return await HTTP.post('/users/login', {
+      username: userName,
+      password: password
+    })
+  } catch (error) {
+    throw error
+  }
 }
+
 export async function getPosts() {
   return await HTTP.get('/posts').then(res => res)
+}
+
+export async function getMyPosts() {
+  return await HTTP.get('/users').then(res => res)
 }
 
 export async function getPost(id) {
@@ -49,6 +55,13 @@ export async function newComment(comment) {
   })
 }
 
-// export async function logout() {
-//   return await HTTP
-// }
+export function logout() {
+  localStorage.removeItem('token')
+  return
+}
+
+export async function reSendVerificaiton(username) {
+  return await HTTP.post('/users/resendVerificationEmail', username).then(res => {
+    return res
+  })
+}

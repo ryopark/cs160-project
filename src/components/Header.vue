@@ -1,6 +1,8 @@
 <template>
   <b-navbar class="Header">
-    <h3 class="title" href="#">CollegeRoom</h3>
+    <h3>
+      <router-link class="title" to="/">College Room</router-link>
+    </h3>
 
     <!-- Right aligned nav items -->
     <b-navbar-nav class="ml-auto">
@@ -11,10 +13,15 @@
 </template>
 
 <script>
+import { logout } from '../usecases'
+
 export default {
   name: 'Header',
   methods: {
-    logout() {},
+    logout() {
+      logout()
+      this.$router.push('login')
+    },
     goCreatePost() {
       this.$router.push('posts/new')
     }
