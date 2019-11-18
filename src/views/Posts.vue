@@ -1,6 +1,13 @@
 <template>
   <div class="Posts">
     <b-list-group class="postList w-75">
+      <b-form-input
+        v-model="searchInput"
+        class="mb-2 bg-black"
+        type="search"
+        placeholder="search by name..."
+      ></b-form-input>
+
       <b-list-group-item
         v-for="post in filteredPosts"
         :key="post.id"
@@ -32,14 +39,20 @@ export default {
   data() {
     return {
       posts: [],
-      myPosts: []
+      myPosts: [],
+      searchInput: ''
     }
   },
   computed: {
-    filteredPosts() {
+    filteredByCategoryPosts() {
       if (this.selectedCategory === 'all') return this.posts
       if (this.selectedCategory === 'my posts') return this.myPosts
       return this.posts.filter(post => post.category === this.selectedCategory)
+    },
+    filteredPosts() {
+      return this.searchInput.length
+        ? this.filteredByCategoryPosts.filter(post => post.title.startsWith(this.searchInput))
+        : this.filteredByCategoryPosts
     }
   },
   mounted() {
